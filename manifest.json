@@ -8,5 +8,17 @@
   "short_name": "Mayo26",
   "start_url": "/Gym-Mayo26/",
   "theme_color": "#0D0D0D",
-  "lang": "es"
+  "lang": "es",
+   "icons": [
+    {
+      "src": "/Gym-Mayo26/icons/dumbbell_866775(1).png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/Gym-Mayo26/icons/dumbbell_866775.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
