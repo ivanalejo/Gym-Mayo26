@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0D0D0D" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#F0F2F5" media="(prefers-color-scheme: light)">
+  <title>Gym Tracker</title>
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    input, textarea, button { font-family: inherit; font-size: 16px !important; -webkit-appearance: none; appearance: none; border: none; outline: none; background: none; }
+    button { cursor: pointer; }
+    ::-webkit-scrollbar { width: 0; height: 0; }
+
+    /* ── Theme: Dark (default) ── */
+    :root {
+      --bg:         #0D0D0D;
+      --surf-1:     #1A1A1A;
+      --surf-2:     #222222;
+      --surf-3:     #2A2A2A;
+      --primary:    #5BA4F5;
+      --primary-dim:#2A4A7A;
+      --success:    #4FC66A;
+      --danger:     #F56565;
+      --warn:       #F6AD55;
+      --text-1:     #F0F2F5;
+      --text-2:     #A8B2C0;
+      --text-3:     #5A6472;
+      --outline:    #2A2E36;
+      --outline-2:  #353B45;
+      --pill-bg:    #252B34;
+      --badge-alpha:0.15;
+      --input-bg:   #1E2028;
+      --ripple:     rgba(255,255,255,0.06);
+      --shadow:     0 2px 12px rgba(0,0,0,0.4);
+    }
+
+    /* ── Theme: Light ── */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg:         #F0F2F5;
+        --surf-1:     #FFFFFF;
+        --surf-2:     #F7F8FA;
+        --surf-3:     #ECEEF2;
+        --primary:    #1A66CC;
+        --primary-dim:#DDEEFF;
+        --success:    #1A7F39;
+        --danger:     #CC2200;
+        --warn:       #CC6B00;
+        --text-1:     #0D1117;
+        --text-2:     #424A55;
+        --text-3:     #8B949E;
+        --outline:    #D0D5DD;
+        --outline-2:  #E5E8ED;
+        --pill-bg:    #EFF1F5;
+        --badge-alpha:0.12;
+        --input-bg:   #F5F7FA;
+        --ripple:     rgba(0,0,0,0.05);
+        --shadow:     0 2px 12px rgba(0,0,0,0.08);
+      }
+    }
+
+    /* ── Layout ── */
+    body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    #scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 16px;
+    }
+
+    /* ── Bottom Nav ── */
+    #bottom-nav {
+      display: flex;
+      border-top: 1px solid var(--outline);
+      background: var(--surf-1);
+      flex-shrink: 0;
+      padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+    .nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 4px 8px;
+      min-height: 60px;
+      gap: 3px;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-3);
+      transition: color 0.15s;
+    }
+    .nav-btn.active { color: var(--primary); font-weight: 600; }
+    .nav-dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: transparent;
+      transition: background 0.15s;
+    }
+    .nav-btn.active .nav-dot { background: var(--primary); }
+
+    /* ── Page headers ── */
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-1);
+      margin: 20px 16px 4px;
+      letter-spacing: -0.3px;
+    }
+    .page-sub {
+      font-size: 14px;
+      color: var(--text-2);
+      margin: 0 16px 16px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surf-1);
+      border-radius: 14px;
+      border: 1px solid var(--outline);
+      padding: 14px 16px;
+      margin: 0 16px 10px;
+    }
+    .card-accent {
+      border-left-width: 3px;
+      border-left-style: solid;
+    }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 8px;
+      padding: 3px 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ── Pills ── */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--pill-bg);
+      border-radius: 99px;
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--text-2);
+      border: 1px solid var(--outline-2);
+    }
+    .pill .remove {
+      font-size: 16px;
+      line-height: 1;
+      color: var(--text-3);
+      margin-left: 2px;
+      padding: 0 2px;
+    }
+
+    /* ── Progress bar ── */
+    .progress-track {
+      background: var(--surf-3);
+      border-radius: 99px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.4s ease;
+    }
+
+    /* ── Sticky workout header ── */
+    #workout-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--surf-1);
+      border-bottom: 1px solid var(--outline);
+      padding: 12px 16px 10px;
+    }
+
+    /* ── Inputs ── */
+    .input-field {
+      background: var(--input-bg);
+      border: 1.5px solid var(--outline);
+      border-radius: 12px;
+      padding: 13px 14px;
+      color: var(--text-1);
+      font-size: 16px !important;
+      width: 100%;
+      transition: border-color 0.2s;
+    }
+    .input-field:focus { border-color: var(--primary); }
+    .input-field::placeholder { color: var(--text-3); }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      padding: 13px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      min-height: 50px;
+      transition: opacity 0.15s, transform 0.1s;
+      border: none;
+    }
+    .btn:active { opacity: 0.8; transform: scale(0.97); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-ghost { background: var(--surf-2); color: var(--text-2); border: 1px solid var(--outline); }
+    .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-sm { min-height: 40px; padding: 8px 14px; font-size: 13px; font-weight: 500; border-radius: 10px; }
+
+    /* ── Day selector (scrollable chips) ── */
+    .chip-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 16px 12px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .chip {
+      flex-shrink: 0;
+      padding: 9px 16px;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--outline);
+      background: var(--surf-2);
+      color: var(--text-2);
+      min-height: 40px;
+      transition: all 0.15s;
+    }
+    .chip.active { background: var(--primary); color: #fff; border-color: transparent; }
+    .chip.today { border-color: var(--primary); color: var(--primary); background: var(--surf-2); }
+    .chip.active.today { background: var(--primary); color: #fff; }
+
+    /* ── Exercise card states ── */
+    .ex-card { transition: border-color 0.3s; }
+    .ex-name { font-size: 15px; font-weight: 600; color: var(--text-1); line-height: 1.3; margin-bottom: 8px; }
+    .ex-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
+    .ex-note { font-size: 12px; color: var(--text-3); font-style: italic; margin-top: 4px; }
+    .ex-sets-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .done-icon { font-size: 20px; margin-left: 8px; flex-shrink: 0; }
+
+    /* ── Add series button ── */
+    .add-set-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      min-height: 48px;
+      background: transparent;
+      border: 1px dashed var(--outline-2);
+      color: var(--text-3);
+    }
+    .add-set-btn:active { background: var(--surf-3); }
+    .add-set-btn.done { border-color: var(--success); color: var(--success); background: transparent; }
+
+    /* ── Input row for series ── */
+    .set-input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .set-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    /* ── Finish modal ── */
+    #finish-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 100;
+      display: flex;
+      align-items: flex-end;
+    }
+    #finish-sheet {
+      background: var(--surf-1);
+      border-radius: 20px 20px 0 0;
+      padding: 24px 16px calc(24px + env(safe-area-inset-bottom, 0));
+      width: 100%;
+    }
+
+    /* ── Calendar ── */
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+      padding: 0 16px;
+    }
+    .cal-day-label {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-3);
+      padding: 4px 0;
+      font-weight: 500;
+    }
+    .cal-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      cursor: pointer;
+      position: relative;
+      font-size: 14px;
+      color: var(--text-1);
+      transition: background 0.15s;
+    }
+    .cal-cell.empty { pointer-events: none; }
+    .cal-cell.today { background: var(--primary-dim); color: var(--primary); font-weight: 700; }
+    .cal-cell.selected { background: var(--primary); color: #fff; font-weight: 700; }
+    .cal-cell.has-workout .dot {
+      position: absolute; bottom: 3px;
+      width: 4px; height: 4px; border-radius: 50%;
+    }
+    .cal-cell.selected .dot { background: rgba(255,255,255,0.7); }
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      margin-bottom: 16px;
+    }
+    .cal-nav-btn {
+      background: var(--surf-2);
+      border: 1px solid var(--outline);
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 18px;
+      color: var(--text-1);
+      min-height: 48px;
+      cursor: pointer;
+    }
+    .cal-nav-title {
+      flex: 1;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-1);
+    }
+
+    /* ── History filter ── */
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 16px 12px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ── Divider ── */
+    .divider { height: 1px; background: var(--outline); margin: 12px 0; }
+
+    /* ── Empty state ── */
+    .empty-state {
+      text-align: center;
+      padding: 64px 24px;
+      color: var(--text-3);
+    }
+    .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+    .empty-state .label { font-size: 16px; font-weight: 500; margin-bottom: 6px; color: var(--text-2); }
+    .empty-state .hint { font-size: 14px; }
+
+    /* ── Confirm inline ── */
+    .confirm-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 12px;
+    }
+    .confirm-text { font-size: 14px; color: var(--text-2); flex: 1; }
+
+    /* ── Section label ── */
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin: 20px 16px 8px;
+    }
+
+    /* ── Utility ── */
+    .row { display: flex; align-items: center; gap: 10px; }
+    .col { display: flex; flex-direction: column; }
+    .flex1 { flex: 1; }
+    .mt4 { margin-top: 4px; }
+    .mt8 { margin-top: 8px; }
+    .mt12 { margin-top: 12px; }
+    .mb8 { margin-bottom: 8px; }
+    .fw600 { font-weight: 600; }
+    .fs13 { font-size: 13px; }
+    .fs14 { font-size: 14px; }
+    .fs15 { font-size: 15px; }
+    .c2 { color: var(--text-2); }
+    .c3 { color: var(--text-3); }
+    .mono { font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+
+<div id="scroll-area">
+  <div id="app-content"></div>
+</div>
+
+<nav id="bottom-nav">
+  <button class="nav-btn active" data-tab="workout" onclick="switchTab('workout')">
+    <span>Entreno</span><div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" data-tab="diet" onclick="switchTab('diet')">
+    <span>Dieta</span><div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" data-tab="history" onclick="switchTab('history')">
+    <span>Historial</span><div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" data-tab="calendar" onclick="switchTab('calendar')">
+    <span>Calendario</span><div class="nav-dot"></div>
+  </button>
+</nav>
+
+<div id="finish-overlay" style="display:none"></div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   DATOS DE ENTRENAMIENTO Y DIETA
+═══════════════════════════════════════════════ */
+const DAYS = [
+  {
+    id: 1, name: "Pecho + Bíceps", muscles: "Pecho · Bíceps", color: "#5BA4F5",
+    exercises: [
+      { name: "Press plano con barra (Press de banca)", sets: 4, reps: "8-10", rest: "2 min", notes: "" },
+      { name: "Press inclinado en Multipower con tempo", sets: 4, reps: "6-10", rest: "El necesario", notes: "Tempo: 4s bajada · 2s parada · 2s subida. Banco 45°, no extender codos arriba del todo" },
+      { name: "Press en máquina", sets: 4, reps: "6-8", rest: "1,5 min", notes: "Baja muy lento y controlado" },
+      { name: "Fondos para pecho", sets: 3, reps: "Máx. reps", rest: "2 min", notes: "Elige posición más separada del cuerpo. Si haces más de 10 reps → ponerse lastre" },
+      { name: "Aperturas en máquina / Cruces polea media", sets: 1, reps: "50 reps", rest: "Micro descansos 10 seg", notes: "1 serie larga de 50 repeticiones, descansa 10 segundos cuando necesites" },
+      { name: "Curl con barra recta en polea", sets: 3, reps: "8-10", rest: "1 min", notes: "" },
+      { name: "Curl de bíceps martillo con cuerda", sets: 7, reps: "8-12 (7 min)", rest: "30 seg", notes: "Trabaja durante 7 minutos seguidos: series de 8-12 reps con 30 seg de descanso entre ellas" },
+    ]
+  },
+  {
+    id: 2, name: "Espalda + Tríceps", muscles: "Espalda · Tríceps", color: "#B57BF7",
+    exercises: [
+      { name: "Remo en máquina con tempo", sets: 4, reps: "8-10", rest: "2 min", notes: "Tempo: 2s contracción · 2s parada en máx. contracción · 4s bajada. Codos hacia fuera" },
+      { name: "Seal Row con mancuernas", sets: 4, reps: "8-10", rest: "2 min", notes: "" },
+      { name: "Remo Gironda a una mano", sets: 4, reps: "8-10", rest: "2 min", notes: "" },
+      { name: "Jalón al pecho agarre abierto", sets: 4, reps: "6-8", rest: "2 min", notes: "" },
+      { name: "Pullover con cuerda en polea", sets: 3, reps: "10-12", rest: "1,5 min", notes: "Controla el movimiento de forma lenta" },
+      { name: "Press francés con barra Z", sets: 4, reps: "8-10", rest: "El necesario", notes: "" },
+      { name: "Extensión de tríceps en polea con cuerda", sets: 1, reps: "50 reps", rest: "Micro descansos 10 seg", notes: "1 serie de 50 repeticiones, descansa 10 segundos cuando necesites" },
+    ]
+  },
+  {
+    id: 3, name: "Hombro + Abdomen", muscles: "Hombro · Core", color: "#F6AD55",
+    exercises: [
+      { name: "Press militar con mancuernas con tempo", sets: 4, reps: "6-8", rest: "El necesario", notes: "Tempo: 4s bajada · 2s parada · 2s subida. Bajar controlado hasta tocar el pecho" },
+      { name: "Elevaciones laterales en polea a una mano", sets: 3, reps: "8-10", rest: "1,5 min", notes: "" },
+      { name: "Elevaciones frontales en polea baja", sets: 3, reps: "10-12", rest: "1,5 min", notes: "" },
+      { name: "Press militar sentado barra corta + Cruces hombro posterior", sets: 3, reps: "10-12", rest: "1 min", notes: "Superset: press con agarre estrecho y codos pegados/adelantados + cruces para hombro posterior" },
+      { name: "Facepull en polea", sets: 1, reps: "50 reps", rest: "Micro descansos 10 seg", notes: "1 serie de 50 repeticiones, descansa 10 segundos cuando necesites" },
+      { name: "Crunch abdominal en máquina o polea con peso", sets: 4, reps: "12-15", rest: "1 min", notes: "Si no puedes en máquina → crunch en el suelo con colchoneta" },
+      { name: "Plancha abdominal", sets: 4, reps: "1 minuto", rest: "1 min", notes: "4 series de 1 minuto" },
+    ]
+  },
+  {
+    id: 4, name: "Pierna", muscles: "Cuádriceps · Femoral · Glúteo · Gemelo", color: "#4FC66A",
+    exercises: [
+      { name: "Prensa inclinada (pies abajo+estrechos / pies arriba+anchos)", sets: 3, reps: "8-10 c/modalidad", rest: "2 min", notes: "Alterna sin descanso: 8-10 reps pies abajo y estrechos, luego 8-10 reps pies arriba y más anchos. Recorrido completo" },
+      { name: "Peso muerto rumano en Multipower", sets: 4, reps: "6-8", rest: "1,5 min", notes: "Controla el movimiento en todo momento" },
+      { name: "Sentadilla pies estrechos en Multipower con tempo", sets: 3, reps: "6-8", rest: "1,5 min", notes: "Tempo: 4s bajada · 2s parada · 2s subida. Apertura nunca mayor que el ancho de hombros" },
+      { name: "Extensión de cuádriceps en máquina a una pierna", sets: 4, reps: "10-12", rest: "1,5 min", notes: "" },
+      { name: "Femoral sentado en máquina", sets: 4, reps: "8-10", rest: "1,5 min", notes: "" },
+      { name: "Zancadas estáticas con mancuernas", sets: 3, reps: "8-10 c/pierna", rest: "1,5 min", notes: "" },
+      { name: "Hip Thrust en Multipower", sets: 3, reps: "8-10", rest: "2 min", notes: "Tensión constante. Apretar el glúteo sin parar ni arriba ni abajo" },
+      { name: "Gemelo en escalón", sets: 1, reps: "100 reps", rest: "Sin descanso", notes: "1 serie de 100 repeticiones. Puedes hacer micro descansos de 10 seg hasta completarlas" },
+    ]
+  },
+  {
+    id: 5, name: "Brazo + Abdomen", muscles: "Bíceps · Tríceps · Core", color: "#F56565",
+    exercises: [
+      { name: "Curl en polea baja con barra", sets: 4, reps: "8-10", rest: "1,5 min", notes: "" },
+      { name: "Curl en máquina", sets: 1, reps: "50 reps", rest: "Micro descansos 10 seg", notes: "1 serie de 50 repeticiones, descansa 10 segundos cuando necesites" },
+      { name: "Curl unilateral concentrado en banco", sets: 4, reps: "8-12", rest: "1,5 min", notes: "" },
+      { name: "Extensión de tríceps Katana", sets: 4, reps: "8-12", rest: "1,5 min", notes: "" },
+      { name: "Tríceps en máquina", sets: 1, reps: "50 reps", rest: "Micro descansos 10 seg", notes: "1 serie de 50 repeticiones, descansa 10 segundos cuando necesites" },
+      { name: "Press francés neutro con mancuernas", sets: 4, reps: "6-8", rest: "El necesario", notes: "" },
+      { name: "Circuito abdomen (x3 rondas)", sets: 3, reps: "Al fallo / 30 seg plancha", rest: "1 min entre rondas", notes: "3 ejercicios seguidos sin descanso: 1) Crunch abdominal al fallo · 2) Elevaciones piernas tumbado al fallo · 3) Plancha 30 seg. Descanso 1 min y repetir x3" },
+    ]
+  },
+];
+
+const DIET = {
+  0: { name: "Domingo", meals: [
+    { label: "Comida 1", items: ["30g cereal mix sin azúcar añadido (Mercadona)", "150ml leche desnatada", "30g proteína en polvo"] },
+    { label: "Comida 2", items: ["1 pan de tortilla de avena (sección fajitas Mercadona)", "Tortilla de 3 huevos"] },
+    { label: "Comida 3", items: ["300g patata", "2 latas sardinas en tomate Mercadona o 200g pechuga de pollo", "Verdura a tu gusto", "1 pieza de fruta"], notes: "Puedes usar bolsa de arroz congelado Mercadona 160g" },
+    { label: "Comida 4", items: ["2 yogurt de proteína", "1 plátano"] },
+    { label: "Comida 5", items: ["Comida libre con cuidado", "Máx. 1000 kcal", "Incluir proteína"], free: true, notes: "Si tienes hambre por la noche: 30g proteína caseína + dedo de bebida vegetal (queda como pudín)" },
+  ]},
+  1: { name: "Lunes", meals: [
+    { label: "Comida 1", items: ["30g cereal mix sin azúcar añadido (Mercadona)", "150ml leche desnatada", "30g proteína en polvo"] },
+    { label: "Comida 2", items: ["1 pan de tortilla de avena (sección fajitas Mercadona)", "Tortilla de 3 huevos"] },
+    { label: "Comida 3", items: ["60g arroz en crudo", "150g pechuga de pollo", "100g aguacate", "1 yogurt de proteína"], notes: "Puedes usar bolsa de arroz congelado Mercadona 160g · Spray de aceite para cocinar" },
+    { label: "Comida 4", items: ["2 yogurt de proteína", "1 plátano"] },
+    { label: "Comida 5", items: ["250g puré de verdura o verdura a tu gusto", "200g pechuga de pollo", "200g patata", "Ketchup light o salsa barbacoa light", "1 yogurt cualquiera por debajo de 80 kcal"], notes: "Tienes 1 toque de spray de aceite para la cena" },
+  ]},
+  2: { name: "Martes", meals: [
+    { label: "Comida 1", items: ["Tortita: 6 claras de huevo + 2 yemas", "40g harina de avena (sabores)"], notes: "Compra avena en tienda de suplementos deportivos · Claras de bote · Spray de aceite en la sartén" },
+    { label: "Comida 2", items: ["100g fiambre de pollo", "30g pan", "1 pieza de fruta"] },
+    { label: "Comida 3", items: ["200g garbanzos u otra legumbre de bote", "Verdura a tu gusto", "1 vasito de arroz para calentar", "200g pechuga de pollo o lomo adobado", "1 pieza de fruta"] },
+    { label: "Comida 4", items: ["30g proteína en polvo", "200ml leche desnatada o bebida vegetal baja en kcal", "30g avena en polvo de sabores", "1 pieza de fruta"] },
+    { label: "Comida 5", items: ["125g salmón", "200g patata", "Verdura a tu gusto", "1 yogurt cualquiera por debajo de 80 kcal"] },
+  ]},
+  3: { name: "Miércoles", meals: [
+    { label: "Comida 1", items: ["30g cereal mix sin azúcar añadido (Mercadona)", "150ml leche desnatada", "30g proteína en polvo"] },
+    { label: "Comida 2", items: ["1 pan de tortilla de avena (sección fajitas Mercadona)", "Tortilla de 3 huevos"] },
+    { label: "Comida 3", items: ["300g patata", "200g ternera", "Verdura a tu gusto", "1 pieza de fruta"], notes: "La ternera puede ser carne picada de carnicería o hamburguesas de carnicería · Puedes usar bolsa de arroz Mercadona" },
+    { label: "Comida 4", items: ["2 yogurt de proteína", "1 plátano"] },
+    { label: "Comida 5", items: ["200g hamburguesas de pechuga de pollo", "100g aguacate", "Verdura a tu gusto", "1 yogurt cualquiera por debajo de 80 kcal"] },
+  ]},
+  4: { name: "Jueves", meals: [
+    { label: "Comida 1", items: ["Tortita: 6 claras de huevo + 2 yemas", "40g harina de avena (sabores)"] },
+    { label: "Comida 2", items: ["100g fiambre de pollo", "30g pan", "1 pieza de fruta"] },
+    { label: "Comida 3", items: ["60g pasta pesada en crudo", "200g pechuga de pollo", "1 cucharada de tomate frito sin azúcar añadido", "1 pieza de fruta"], notes: "Puedes usar bolsa de arroz congelado Mercadona 160g" },
+    { label: "Comida 4", items: ["30g proteína en polvo", "200ml leche desnatada o bebida vegetal baja en kcal", "30g avena en polvo de sabores", "1 pieza de fruta"] },
+    { label: "Comida 5", items: ["250g puré de verdura o verdura a tu gusto", "200g pechuga de pollo", "200g patata", "Ketchup light o salsa barbacoa light", "1 yogurt cualquiera por debajo de 80 kcal"] },
+  ]},
+  5: { name: "Viernes", meals: [
+    { label: "Comida 1", items: ["30g cereal mix sin azúcar añadido (Mercadona)", "150ml leche desnatada", "30g proteína en polvo"] },
+    { label: "Comida 2", items: ["1 pan de tortilla de avena (sección fajitas Mercadona)", "Tortilla de 3 huevos"] },
+    { label: "Comida 3", items: ["Tu comida 3 preferida de lunes a jueves"], notes: "Elige la que más te apetezca hoy" },
+    { label: "Comida 4", items: ["2 yogurt de proteína", "1 plátano"] },
+    { label: "Comida 5", items: ["200g hamburguesas de pechuga de pollo", "100g aguacate", "Verdura a tu gusto", "1 yogurt cualquiera por debajo de 80 kcal"] },
+  ]},
+  6: { name: "Sábado", meals: [
+    { label: "Comida 1", items: ["Tortita: 6 claras de huevo + 2 yemas", "40g harina de avena (sabores)"] },
+    { label: "Comida 2", items: ["100g fiambre de pollo", "30g pan", "1 pieza de fruta"] },
+    { label: "Comida 3", items: ["60g arroz en crudo", "100g aguacate", "2 latas de atún al natural o en escabeche", "1 pieza de fruta"], notes: "Puedes usar bolsa de arroz congelado Mercadona 160g" },
+    { label: "Comida 4", items: ["30g proteína en polvo", "200ml leche desnatada o bebida vegetal baja en kcal", "30g avena en polvo de sabores", "1 pieza de fruta"] },
+    { label: "Comida 5", items: ["Comida libre con cuidado", "Máx. 1000 kcal", "Incluir proteína"], free: true },
+  ]},
+};
+
+const DIET_NOTES = [
+  "Café/té con edulcorante + chorrito de leche desnatada o bebida vegetal baja en kcal",
+  "Refrescos light permitidos",
+  "Mínimo 2 litros de agua al día",
+  "Caldo antes de las comidas si tienes hambre",
+  "Usa sal normal",
+  "Hambre nocturna: 30g proteína caseína + dedo de bebida vegetal (queda como pudín)",
+];
+
+const MONTHS = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const DOW_SHORT = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+const SK = "gymtracker_v5";
+
+/* ═══════════════════════════════════════════════
+   ESTADO GLOBAL
+═══════════════════════════════════════════════ */
+let state = {
+  tab: "workout",
+  // Workout session
+  session: null,       // { dayIdx }
+  sets: {},            // { exIdx: [{reps, weight}] }
+  activeEx: null,
+  repsIn: "",
+  weightIn: "",
+  finishing: false,
+  noteText: "",
+  // Diet
+  dietDay: new Date().getDay(),
+  // History
+  history: [],
+  histFilter: null,
+  expandId: null,
+  editNoteId: null,
+  editNoteTxt: "",
+  confDelId: null,
+  // Calendar
+  calYear: new Date().getFullYear(),
+  calMonth: new Date().getMonth(),
+  selDate: null,
+};
+
+/* ═══════════════════════════════════════════════
+   STORAGE (localStorage)
+═══════════════════════════════════════════════ */
+function loadHistory() {
+  try {
+    const d = localStorage.getItem(SK);
+    return d ? JSON.parse(d) : [];
+  } catch { return []; }
+}
+
+function saveHistory() {
+  try { localStorage.setItem(SK, JSON.stringify(state.history)); } catch {}
+}
+
+/* ═══════════════════════════════════════════════
+   UTILIDADES
+═══════════════════════════════════════════════ */
+function todayStr() { return new Date().toISOString().split("T")[0]; }
+function fmtDate(d) {
+  return new Date(d + "T12:00:00").toLocaleDateString("es-ES", { weekday: "short", day: "numeric", month: "short" });
+}
+function getLastWeight(exName) {
+  for (const w of state.history) {
+    const ex = w.exercises?.find(e => e.name === exName);
+    if (ex) {
+      const ws = ex.sets?.filter(s => s.weight);
+      if (ws?.length) return ws[ws.length - 1].weight;
+    }
+  }
+  return null;
+}
+function totalSets() {
+  if (!state.session) return 0;
+  return DAYS[state.session.dayIdx].exercises.reduce((s, e) => s + e.sets, 0);
+}
+function doneSets() {
+  return Object.values(state.sets).reduce((s, a) => s + a.length, 0);
+}
+function pct() {
+  const t = totalSets();
+  return t > 0 ? Math.round((doneSets() / t) * 100) : 0;
+}
+function h(tag, attrs, ...children) {
+  const el = document.createElement(tag);
+  if (attrs) {
+    for (const [k, v] of Object.entries(attrs)) {
+      if (k === "onclick") el.onclick = v;
+      else if (k === "oninput") el.oninput = v;
+      else if (k === "onkeydown") el.onkeydown = v;
+      else if (k === "style") Object.assign(el.style, v);
+      else if (k === "class") el.className = v;
+      else el.setAttribute(k, v);
+    }
+  }
+  for (const child of children) {
+    if (child == null) continue;
+    if (typeof child === "string" || typeof child === "number") {
+      el.appendChild(document.createTextNode(String(child)));
+    } else if (child instanceof Node) {
+      el.appendChild(child);
+    }
+  }
+  return el;
+}
+function setState(patch) {
+  Object.assign(state, patch);
+  render();
+}
+
+/* ═══════════════════════════════════════════════
+   ACCIONES
+═══════════════════════════════════════════════ */
+function startSession(idx) {
+  const init = {};
+  DAYS[idx].exercises.forEach((_, i) => { init[i] = []; });
+  setState({ session: { dayIdx: idx }, sets: init, activeEx: null, repsIn: "", weightIn: "", finishing: false, noteText: "" });
+  document.getElementById("scroll-area").scrollTop = 0;
+}
+
+function openEx(ei) {
+  const day = DAYS[state.session.dayIdx];
+  const lw = getLastWeight(day.exercises[ei].name);
+  setState({ activeEx: ei, repsIn: "", weightIn: lw || "" });
+  setTimeout(() => {
+    const inp = document.getElementById("reps-input");
+    if (inp) inp.focus();
+  }, 80);
+}
+
+function closeEx() { setState({ activeEx: null, repsIn: "", weightIn: "" }); }
+
+function addSet(ei) {
+  if (!state.repsIn.trim()) return;
+  const s = { reps: state.repsIn.trim(), weight: state.weightIn.trim() || null };
+  const newSets = { ...state.sets, [ei]: [...state.sets[ei], s] };
+  setState({ sets: newSets, repsIn: "" });
+  setTimeout(() => {
+    const inp = document.getElementById("reps-input");
+    if (inp) inp.focus();
+  }, 40);
+}
+
+function repeatSet(ei) {
+  const ms = state.sets[ei];
+  if (!ms || !ms.length) return;
+  const last = ms[ms.length - 1];
+  const newSets = { ...state.sets, [ei]: [...ms, { ...last }] };
+  setState({ sets: newSets });
+}
+
+function removeSetItem(ei, si) {
+  const newSets = { ...state.sets, [ei]: state.sets[ei].filter((_, i) => i !== si) };
+  setState({ sets: newSets });
+}
+
+async function finishWorkout() {
+  const day = DAYS[state.session.dayIdx];
+  const w = {
+    id: Date.now(),
+    date: todayStr(),
+    dayId: day.id,
+    dayName: day.name,
+    muscles: day.muscles,
+    color: day.color,
+    exercises: day.exercises.map((ex, i) => ({ name: ex.name, targetSets: ex.sets, sets: state.sets[i] || [] })),
+    note: state.noteText.trim(),
+    completedAt: Date.now(),
+  };
+  state.history = [w, ...state.history];
+  saveHistory();
+  setState({ session: null, finishing: false, noteText: "", tab: "history" });
+}
+
+async function saveNote(id) {
+  state.history = state.history.map(w => w.id === id ? { ...w, note: state.editNoteTxt } : w);
+  saveHistory();
+  setState({ editNoteId: null });
+}
+
+async function delWorkout(id) {
+  state.history = state.history.filter(w => w.id !== id);
+  saveHistory();
+  setState({ confDelId: null, expandId: null });
+}
+
+/* ═══════════════════════════════════════════════
+   RENDERS
+═══════════════════════════════════════════════ */
+
+// ── Workout ──
+function renderWorkout() {
+  const wrap = h("div", {});
+
+  if (!state.session) {
+    wrap.appendChild(h("div", { class: "page-title" }, "Entrenamiento"));
+    wrap.appendChild(h("div", { class: "page-sub" }, "¿Qué entrenas hoy?"));
+
+    for (let idx = 0; idx < DAYS.length; idx++) {
+      const d = DAYS[idx];
+      const card = h("div", {
+        class: "card card-accent",
+        style: { borderLeftColor: d.color, cursor: "pointer", padding: "16px 16px" },
+        onclick: () => startSession(idx),
+      });
+      const badge = h("span", {
+        class: "badge",
+        style: { background: d.color + "25", color: d.color }
+      }, "D" + d.id);
+      const info = h("div", { class: "col flex1", style: { gap: "2px" } },
+        h("div", { style: { fontWeight: 600, fontSize: "16px", color: "var(--text-1)" } }, d.name),
+        h("div", { style: { fontSize: "13px", color: "var(--text-2)" } }, d.muscles)
+      );
+      const meta = h("div", { class: "col", style: { alignItems: "flex-end", gap: "2px", flexShrink: 0 } },
+        h("span", { style: { fontSize: "12px", color: "var(--text-3)" } }, d.exercises.length + " ejercicios"),
+        h("span", { style: { fontSize: "12px", color: "var(--text-3)" } }, d.exercises.reduce((s, e) => s + e.sets, 0) + " series")
+      );
+      card.appendChild(h("div", { class: "row" }, badge, info, meta));
+      wrap.appendChild(card);
+    }
+    return wrap;
+  }
+
+  // Session active
+  const day = DAYS[state.session.dayIdx];
+  const done = doneSets();
+  const total = totalSets();
+  const p = pct();
+
+  // Sticky header
+  const hdr = h("div", { id: "workout-header" });
+  const hdrTop = h("div", { class: "row mb8" });
+  const badge = h("span", { class: "badge", style: { background: day.color + "25", color: day.color } }, "D" + day.id);
+  const dayInfo = h("div", { class: "col flex1", style: { gap: "2px" } },
+    h("div", { style: { fontWeight: 600, fontSize: "15px" } }, day.name),
+    h("div", { style: { fontSize: "12px", color: "var(--text-2)" } }, day.muscles)
+  );
+
+  let hdrBtn;
+  if (done > 0) {
+    hdrBtn = h("button", {
+      class: "btn btn-primary btn-sm",
+      onclick: () => setState({ finishing: true })
+    }, p === 100 ? "Finalizar ✓" : p + "% — Finalizar");
+  } else {
+    hdrBtn = h("button", {
+      class: "btn btn-ghost btn-sm",
+      onclick: () => setState({ session: null })
+    }, "Salir");
+  }
+  hdrTop.append(badge, dayInfo, hdrBtn);
+  hdr.appendChild(hdrTop);
+
+  // Progress bar
+  const ptrack = h("div", { class: "progress-track" });
+  const pfill = h("div", { class: "progress-fill", style: { width: p + "%", background: day.color } });
+  ptrack.appendChild(pfill);
+  hdr.appendChild(ptrack);
+  const pinfo = h("div", { class: "row mt4", style: { justifyContent: "space-between" } },
+    h("span", { style: { fontSize: "12px", color: "var(--text-3)" } }, done + " / " + total + " series"),
+    done === 0 ? h("button", { onclick: () => setState({ session: null }), style: { background: "none", fontSize: "12px", color: "var(--text-3)", cursor: "pointer" } }, "Salir") : null
+  );
+  hdr.appendChild(pinfo);
+  wrap.appendChild(hdr);
+
+  // Exercises
+  const exList = h("div", { style: { padding: "8px 0" } });
+  day.exercises.forEach((ex, ei) => {
+    const ms = state.sets[ei] || [];
+    const isActive = state.activeEx === ei;
+    const isDone = ms.length >= ex.sets;
+
+    const card = h("div", {
+      class: "card card-accent ex-card",
+      style: { borderLeftColor: isDone ? day.color : "var(--outline)" }
+    });
+
+    // Header row
+    const exTop = h("div", { class: "row", style: { alignItems: "flex-start" } });
+    const nameCol = h("div", { class: "col flex1" });
+    nameCol.appendChild(h("div", { class: "ex-name" }, ex.name));
+    const metaRow = h("div", { class: "ex-meta" });
+    [ex.sets + " series", ex.reps + " reps", ex.rest].forEach(txt => {
+      metaRow.appendChild(h("span", { class: "pill" }, txt));
+    });
+    nameCol.appendChild(metaRow);
+    if (ex.notes) nameCol.appendChild(h("div", { class: "ex-note" }, ex.notes));
+    exTop.appendChild(nameCol);
+    if (isDone) exTop.appendChild(h("span", { style: { color: "var(--success)", fontSize: "20px", marginLeft: "8px", flexShrink: 0 } }, "✓"));
+    card.appendChild(exTop);
+
+    // Logged sets
+    if (ms.length > 0) {
+      const setsRow = h("div", { class: "ex-sets-row" });
+      ms.forEach((s, si) => {
+        const pill = h("span", { class: "pill" });
+        pill.appendChild(document.createTextNode(s.reps + "r" + (s.weight ? " · " + s.weight + "kg" : "")));
+        const rm = h("span", { class: "remove", onclick: (e) => { e.stopPropagation(); removeSetItem(ei, si); } }, "×");
+        pill.appendChild(rm);
+        setsRow.appendChild(pill);
+      });
+      card.appendChild(setsRow);
+    }
+
+    // Input area or add button
+    if (isActive) {
+      const inputRow = h("div", { class: "set-input-row" });
+      const repsInp = h("input", {
+        id: "reps-input",
+        class: "input-field",
+        type: "number",
+        inputmode: "numeric",
+        placeholder: "Reps",
+        style: { flex: "1" },
+        oninput: (e) => { state.repsIn = e.target.value; },
+        onkeydown: (e) => { if (e.key === "Enter" && state.repsIn.trim()) addSet(ei); }
+      });
+      repsInp.value = state.repsIn;
+
+      const wghtInp = h("input", {
+        id: "weight-input",
+        class: "input-field",
+        type: "number",
+        inputmode: "decimal",
+        placeholder: "Kg",
+        style: { flex: "1" },
+        oninput: (e) => { state.weightIn = e.target.value; }
+      });
+      wghtInp.value = state.weightIn;
+      inputRow.append(repsInp, wghtInp);
+      card.appendChild(inputRow);
+
+      const actions = h("div", { class: "set-actions" });
+      // Repeat last button
+      if (ms.length > 0) {
+        const last = ms[ms.length - 1];
+        actions.appendChild(h("button", {
+          class: "btn btn-ghost",
+          style: { flex: "1", minHeight: "50px", fontSize: "13px" },
+          onclick: () => repeatSet(ei)
+        }, "Repetir " + last.reps + "r" + (last.weight ? " " + last.weight + "kg" : "")));
+      }
+      actions.appendChild(h("button", {
+        class: "btn btn-ghost",
+        style: { minHeight: "50px", padding: "13px 16px" },
+        onclick: closeEx
+      }, "✕"));
+      const addBtn2 = h("button", {
+        class: "btn",
+        style: {
+          flex: "2",
+          minHeight: "50px",
+          background: state.repsIn.trim() ? day.color : "var(--surf-3)",
+          color: state.repsIn.trim() ? "#fff" : "var(--text-3)"
+        },
+        onclick: () => addSet(ei)
+      }, "+ Añadir");
+      actions.appendChild(addBtn2);
+      card.appendChild(actions);
+    } else {
+      const addBtn = h("button", {
+        class: "add-set-btn" + (isDone ? " done" : ""),
+        onclick: () => openEx(ei)
+      }, isDone ? ("✓ Completado (" + ms.length + "/" + ex.sets + ")") : ("+ Añadir serie" + (ms.length > 0 ? " (" + ms.length + "/" + ex.sets + ")" : "")));
+      card.appendChild(addBtn);
+    }
+
+    exList.appendChild(card);
+  });
+  wrap.appendChild(exList);
+
+  // Complete all button (when nothing active)
+  if (done > 0 && !state.finishing) {
+    const finBtn = h("div", { style: { padding: "0 16px 16px" } },
+      h("button", {
+        class: "btn btn-success",
+        style: { width: "100%", fontSize: "16px" },
+        onclick: () => setState({ finishing: true })
+      }, "Finalizar entrenamiento (" + p + "%)"));
+    wrap.appendChild(finBtn);
+  }
+
+  return wrap;
+}
+
+// ── Finish modal ──
+function renderFinishModal() {
+  const overlay = document.getElementById("finish-overlay");
+  if (!state.finishing || !state.session) { overlay.style.display = "none"; return; }
+  overlay.style.display = "flex";
+  overlay.innerHTML = "";
+
+  const day = DAYS[state.session.dayIdx];
+  const sheet = h("div", { id: "finish-sheet" });
+  sheet.appendChild(h("div", { style: { fontSize: "18px", fontWeight: 700, marginBottom: "4px" } }, "Finalizar entrenamiento"));
+  sheet.appendChild(h("div", { style: { fontSize: "14px", color: "var(--text-2)", marginBottom: "16px" } },
+    doneSets() + " series · D" + day.id + " " + day.name + " · " + pct() + "%"
+  ));
+
+  const ta = h("textarea", {
+    placeholder: "¿Cómo ha ido? Nota opcional...",
+    style: {
+      width: "100%", border: "1.5px solid var(--outline)", borderRadius: "12px",
+      padding: "13px", fontSize: "16px", background: "var(--input-bg)",
+      color: "var(--text-1)", resize: "none", marginBottom: "16px", display: "block"
+    },
+    oninput: (e) => { state.noteText = e.target.value; }
+  });
+  ta.setAttribute("rows", "3");
+  ta.value = state.noteText;
+  sheet.appendChild(ta);
+
+  const btns = h("div", { class: "row" },
+    h("button", { class: "btn btn-ghost flex1", style: { minHeight: "52px" }, onclick: () => setState({ finishing: false }) }, "Volver"),
+    h("button", { class: "btn btn-primary", style: { flex: "2", minHeight: "52px", fontSize: "16px", background: day.color }, onclick: finishWorkout }, "Guardar entrenamiento")
+  );
+  sheet.appendChild(btns);
+  overlay.appendChild(sheet);
+}
+
+// ── Diet ──
+function renderDiet() {
+  const wrap = h("div", {});
+  wrap.appendChild(h("div", { class: "page-title" }, "Dieta"));
+
+  // Day chips
+  const chipRow = h("div", { class: "chip-row" });
+  const todayDow = new Date().getDay();
+  for (let d = 0; d < 7; d++) {
+    const isTd = d === todayDow;
+    const isSel = d === state.dietDay;
+    const chip = h("button", {
+      class: "chip" + (isSel ? " active" : isTd ? " today" : ""),
+      onclick: () => setState({ dietDay: d })
+    }, DOW_SHORT[d] + (isTd ? " ·" : ""));
+    chipRow.appendChild(chip);
+  }
+  wrap.appendChild(chipRow);
+
+  const dietData = DIET[state.dietDay];
+  wrap.appendChild(h("div", { class: "page-sub" }, dietData.name + (state.dietDay === todayDow ? " · Hoy" : "")));
+
+  dietData.meals.forEach(meal => {
+    const card = h("div", { class: "card card-accent", style: { borderLeftColor: meal.free ? "var(--success)" : "var(--outline-2)" } });
+    card.appendChild(h("div", { style: { fontSize: "12px", fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase", color: meal.free ? "var(--success)" : "var(--primary)", marginBottom: "8px" } }, meal.label));
+    meal.items.forEach(item => {
+      card.appendChild(h("div", { style: { fontSize: "15px", color: "var(--text-1)", padding: "3px 0", display: "flex", gap: "8px" } },
+        h("span", { style: { color: "var(--text-3)", flexShrink: 0 } }, "·"),
+        document.createTextNode(item)
+      ));
+    });
+    if (meal.notes) {
+      card.appendChild(h("div", { style: { marginTop: "10px", fontSize: "12px", color: "var(--text-3)", borderTop: "1px solid var(--outline)", paddingTop: "10px" } }, meal.notes));
+    }
+    wrap.appendChild(card);
+  });
+
+  // Notes card
+  const notesCard = h("div", { class: "card card-accent", style: { borderLeftColor: "var(--success)" } });
+  notesCard.appendChild(h("div", { style: { fontSize: "12px", fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase", color: "var(--success)", marginBottom: "8px" } }, "Notas generales"));
+  DIET_NOTES.forEach(n => {
+    notesCard.appendChild(h("div", { style: { fontSize: "14px", color: "var(--text-2)", padding: "2px 0" } }, "· " + n));
+  });
+  wrap.appendChild(notesCard);
+  return wrap;
+}
+
+// ── History ──
+function renderHistory() {
+  const wrap = h("div", {});
+  wrap.appendChild(h("div", { class: "page-title" }, "Historial"));
+
+  if (!state.history.length) {
+    wrap.appendChild(h("div", { class: "empty-state" },
+      h("div", { class: "icon" }, "📊"),
+      h("div", { class: "label" }, "Sin entrenamientos aún"),
+      h("div", { class: "hint" }, "Completa tu primer entrenamiento")
+    ));
+    return wrap;
+  }
+
+  // Filter chips
+  const filterRow = h("div", { class: "filter-row" });
+  const filters = [{ id: null, label: "Todos" }, ...DAYS.map(d => ({ id: d.id, label: "D" + d.id + " " + d.name }))];
+  filters.forEach(f => {
+    const isActive = state.histFilter === f.id;
+    filterRow.appendChild(h("button", {
+      class: "chip" + (isActive ? " active" : ""),
+      onclick: () => setState({ histFilter: f.id })
+    }, f.label));
+  });
+  wrap.appendChild(filterRow);
+
+  const filtered = state.histFilter ? state.history.filter(w => w.dayId === state.histFilter) : state.history;
+
+  if (!filtered.length) {
+    wrap.appendChild(h("div", { style: { textAlign: "center", padding: "32px 16px", color: "var(--text-3)", fontSize: "14px" } }, "Sin entrenamientos de este tipo"));
+    return wrap;
+  }
+
+  filtered.forEach(w => {
+    const isOpen = state.expandId === w.id;
+    const total = w.exercises.reduce((s, ex) => s + ex.sets.length, 0);
+    const isEdit = state.editNoteId === w.id;
+    const isDel = state.confDelId === w.id;
+
+    const card = h("div", { style: { background: "var(--surf-1)", borderRadius: "14px", border: "1px solid var(--outline)", margin: "0 16px 10px", overflow: "hidden" } });
+
+    // Summary row
+    const summary = h("div", {
+      style: { padding: "14px 16px", cursor: "pointer", minHeight: "60px" },
+      onclick: () => setState({ expandId: isOpen ? null : w.id, confDelId: null, editNoteId: null })
+    });
+    const badge = h("span", { class: "badge", style: { background: (w.color || "#5BA4F5") + "25", color: w.color || "#5BA4F5" } }, "D" + w.dayId);
+    const wInfo = h("div", { class: "col flex1", style: { gap: "2px" } },
+      h("div", { style: { fontWeight: 600, fontSize: "15px" } }, w.dayName),
+      h("div", { style: { fontSize: "12px", color: "var(--text-2)" } }, fmtDate(w.date) + " · " + total + " series")
+    );
+    summary.appendChild(h("div", { class: "row" }, badge, wInfo, h("span", { style: { color: "var(--text-3)", fontSize: "13px", flexShrink: 0 } }, isOpen ? "▲" : "▼")));
+    if (w.note) summary.appendChild(h("div", { style: { marginTop: "6px", fontSize: "13px", color: "var(--text-2)", fontStyle: "italic" } }, '"' + w.note + '"'));
+    card.appendChild(summary);
+
+    if (isOpen) {
+      const detail = h("div", { style: { borderTop: "1px solid var(--outline)", padding: "12px 16px 14px" } });
+      w.exercises.filter(ex => ex.sets.length > 0).forEach(ex => {
+        const exSec = h("div", { style: { marginBottom: "12px" } });
+        exSec.appendChild(h("div", { style: { fontSize: "13px", fontWeight: 600, color: "var(--text-1)", marginBottom: "6px" } }, ex.name));
+        const sRow = h("div", { style: { display: "flex", flexWrap: "wrap", gap: "5px" } });
+        ex.sets.forEach(s => sRow.appendChild(h("span", { class: "pill" }, s.reps + "r" + (s.weight ? " · " + s.weight + "kg" : ""))));
+        exSec.appendChild(sRow);
+        detail.appendChild(exSec);
+      });
+
+      if (isEdit) {
+        const ta = h("textarea", {
+          style: { width: "100%", border: "1.5px solid var(--outline)", borderRadius: "12px", padding: "12px", fontSize: "16px", background: "var(--input-bg)", color: "var(--text-1)", resize: "none", marginTop: "8px", display: "block" },
+          oninput: (e) => { state.editNoteTxt = e.target.value; }
+        });
+        ta.setAttribute("rows", "3");
+        ta.value = state.editNoteTxt;
+        detail.appendChild(ta);
+        detail.appendChild(h("div", { class: "row mt8" },
+          h("button", { class: "btn btn-ghost flex1", style: { minHeight: "48px" }, onclick: () => setState({ editNoteId: null }) }, "Cancelar"),
+          h("button", { class: "btn btn-primary", style: { flex: "2", minHeight: "48px", background: "var(--success)" }, onclick: () => saveNote(w.id) }, "Guardar")
+        ));
+      } else if (isDel) {
+        const confirmRow = h("div", { class: "confirm-row" },
+          h("span", { class: "confirm-text" }, "¿Eliminar este entrenamiento?"),
+          h("button", { class: "btn btn-ghost btn-sm", onclick: () => setState({ confDelId: null }) }, "No"),
+          h("button", { class: "btn btn-danger btn-sm", onclick: () => delWorkout(w.id) }, "Borrar")
+        );
+        detail.appendChild(confirmRow);
+      } else {
+        detail.appendChild(h("div", { class: "row mt8" },
+          h("button", { class: "btn btn-ghost flex1", style: { minHeight: "48px", fontSize: "14px" }, onclick: () => setState({ editNoteId: w.id, editNoteTxt: w.note || "" }) }, w.note ? "Editar nota" : "+ Nota"),
+          h("button", { class: "btn btn-ghost", style: { minHeight: "48px", fontSize: "14px", color: "var(--danger)" }, onclick: () => setState({ confDelId: w.id }) }, "Borrar")
+        ));
+      }
+      card.appendChild(detail);
+    }
+
+    wrap.appendChild(card);
+  });
+  return wrap;
+}
+
+// ── Calendar ──
+function renderCalendar() {
+  const wrap = h("div", {});
+  wrap.appendChild(h("div", { class: "page-title" }, "Calendario"));
+
+  const yr = state.calYear, mo = state.calMonth;
+  const firstDow = new Date(yr, mo, 1).getDay();
+  const offset = firstDow === 0 ? 6 : firstDow - 1;
+  const dim = new Date(yr, mo + 1, 0).getDate();
+  const ti = todayStr();
+  const wmap = {};
+  state.history.forEach(w => { if (!wmap[w.date]) wmap[w.date] = []; wmap[w.date].push(w); });
+
+  // Nav
+  const nav = h("div", { class: "cal-nav" },
+    h("button", { class: "cal-nav-btn", onclick: () => { let nm = mo - 1, ny = yr; if (nm < 0) { nm = 11; ny--; } setState({ calMonth: nm, calYear: ny }); } }, "‹"),
+    h("span", { class: "cal-nav-title" }, MONTHS[mo] + " " + yr),
+    h("button", { class: "cal-nav-btn", onclick: () => { let nm = mo + 1, ny = yr; if (nm > 11) { nm = 0; ny++; } setState({ calMonth: nm, calYear: ny }); } }, "›")
+  );
+  wrap.appendChild(nav);
+
+  // Grid header
+  const grid = h("div", { class: "cal-grid" });
+  ["L","M","X","J","V","S","D"].forEach(d => grid.appendChild(h("div", { class: "cal-day-label" }, d)));
+
+  // Empty cells
+  for (let i = 0; i < offset; i++) grid.appendChild(h("div", { class: "cal-cell empty" }));
+
+  for (let dn = 1; dn <= dim; dn++) {
+    const ds = yr + "-" + String(mo + 1).padStart(2, "0") + "-" + String(dn).padStart(2, "0");
+    const ws = wmap[ds] || [];
+    const isT = ds === ti;
+    const isSel = ds === state.selDate;
+    const hasW = ws.length > 0;
+    let cls = "cal-cell";
+    if (isSel) cls += " selected";
+    else if (isT) cls += " today";
+    if (hasW) cls += " has-workout";
+    const cell = h("div", { class: cls, onclick: () => setState({ selDate: isSel ? null : ds }) }, String(dn));
+    if (hasW) {
+      const dot = h("div", { class: "dot", style: { background: isSel ? "rgba(255,255,255,0.7)" : (ws[0].color || "var(--success)") } });
+      cell.appendChild(dot);
+    }
+    grid.appendChild(cell);
+  }
+  wrap.appendChild(grid);
+
+  // Selected day info
+  if (state.selDate) {
+    const selWs = wmap[state.selDate] || [];
+    const infoCard = h("div", { class: "card", style: { marginTop: "16px" } });
+    infoCard.appendChild(h("div", { style: { fontSize: "13px", color: "var(--text-2)", marginBottom: "10px" } }, fmtDate(state.selDate)));
+    if (!selWs.length) {
+      infoCard.appendChild(h("div", { style: { fontSize: "14px", color: "var(--text-3)" } }, "Sin entrenamiento registrado"));
+    } else {
+      selWs.forEach(w => {
+        const wRow = h("div", { style: { marginBottom: "8px" } },
+          h("div", { class: "row mb8" },
+            h("span", { class: "badge", style: { background: (w.color || "#5BA4F5") + "25", color: w.color || "#5BA4F5" } }, "D" + w.dayId),
+            h("span", { style: { fontWeight: 600, fontSize: "15px" } }, w.dayName)
+          ),
+          h("div", { style: { fontSize: "13px", color: "var(--text-2)" } }, w.muscles + " · " + w.exercises.reduce((s, ex) => s + ex.sets.length, 0) + " series")
+        );
+        if (w.note) wRow.appendChild(h("div", { style: { marginTop: "6px", fontSize: "13px", color: "var(--text-2)", fontStyle: "italic" } }, '"' + w.note + '"'));
+        infoCard.appendChild(wRow);
+      });
+    }
+    wrap.appendChild(infoCard);
+  }
+
+  return wrap;
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER LOOP
+═══════════════════════════════════════════════ */
+function render() {
+  const content = document.getElementById("app-content");
+  const scrollArea = document.getElementById("scroll-area");
+  const prevScroll = scrollArea.scrollTop;
+
+  let view;
+  switch (state.tab) {
+    case "workout": view = renderWorkout(); break;
+    case "diet":    view = renderDiet();    break;
+    case "history": view = renderHistory(); break;
+    case "calendar": view = renderCalendar(); break;
+    default: view = renderWorkout();
+  }
+  content.innerHTML = "";
+  content.appendChild(view);
+  renderFinishModal();
+
+  // Restore scroll only on same-tab re-renders (state changes)
+  if (content._lastTab === state.tab) scrollArea.scrollTop = prevScroll;
+  content._lastTab = state.tab;
+
+  // Update nav
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.tab === state.tab);
+  });
+}
+
+function switchTab(tab) {
+  if (tab !== state.tab) {
+    setState({ tab, expandId: null, confDelId: null, editNoteId: null, selDate: null });
+    document.getElementById("scroll-area").scrollTop = 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+state.history = loadHistory();
+render();
+</script>
+</body>
+</html>
