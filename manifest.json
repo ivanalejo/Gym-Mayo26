@@ -2,14 +2,14 @@
   "background_color": "#ffffff",
   "dir": "ltr",
   "display": "standalone",
-  "name": "Julio 2026",
+  "name": "Agosto 2026",
   "orientation": "any",
   "scope": "/",
-  "short_name": "Julio26",
+  "short_name": "Agosto26",
   "start_url": "/Gym-Mayo26/",
   "theme_color": "#0D0D0D",
   "lang": "es",
-   "icons": [
+  "icons": [
     {
       "src": "/Gym-Mayo26/icons/dumbbell_866775(1).png",
       "sizes": "192x192",
