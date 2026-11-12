@@ -457,120 +457,95 @@ const DAYS = [
   {
     id: 1, name: "Empujes", muscles: "Pecho · Hombro · Tríceps", color: "#5BA4F5",
     exercises: [
-      { name: "Press plano en Multipower", sets: 4, reps: "6-8", rest: "1,5 min", notes: "Bajamos muy lento y controlado, con el máximo peso que podamos" },
-      { name: "Press militar en Multipower (banco a 60°)", sets: 4, reps: "8-10", rest: "El necesario", notes: "Con el banco a 60 grados repartes el trabajo entre la porción frontal del hombro y el pecho" },
-      { name: "Fondos para pecho", sets: 3, reps: "8-12", rest: "1,5 min", notes: "Si hacemos más de 12 repeticiones nos lastramos" },
-      { name: "Press en máquina (la que haya en el gym)", sets: 3, reps: "8-10", rest: "El necesario", notes: "" },
-      { name: "Aperturas en máquina o cruces en polea media", sets: 4, reps: "8-10", rest: "1,5 min", notes: "" },
-      { name: "Elevaciones laterales con pecho apoyado en banco", sets: 4, reps: "10-14", rest: "1,5 min", notes: "" },
-      { name: "Press francés neutro con mancuernas", sets: 4, reps: "8-10", rest: "1,5 min", notes: "" },
-      { name: "Extensión de tríceps en polea con cuerda", sets: 1, reps: "75", rest: "10-20 seg", notes: "1 serie de 75 repeticiones. Cogemos un peso con el que nos hagamos 20-25 repeticiones y tenemos que llegar a 75 realizando pequeños descansos de 10-20 segundos" },
+      { name: "Press plano en Multipower", sets: 4, reps: "6-8", rest: "El necesario", notes: "" },
+      { name: "Press militar en Multipower (banco a 60°)", sets: 4, reps: "8-10", rest: "2 min", notes: "" },
+      { name: "Aperturas en máquina o cruces en polea media", sets: 3, reps: "10-12", rest: "1,5 min", notes: "" },
+      { name: "Cruces desde polea baja + Flexiones", sets: 3, reps: "8-10 + flexiones", rest: "1,5 min", notes: "Buscamos el fallo en los cruces y, cuando no podamos hacer más, empezamos con las flexiones" },
+      { name: "Elevaciones laterales en máquina", sets: 3, reps: "10-12", rest: "1,5 min", notes: "Si no hay máquina, con banda elástica · + 1 serie extra con doble descendente: al fallo, bajamos el peso un 20-30% y al fallo sin descanso; volvemos a bajar un 20-30% y último intento al fallo" },
+      { name: "Extensión de tríceps en polea alta con barra V", sets: 3, reps: "8-10", rest: "1,5 min", notes: "" },
+      { name: "Extensión de tríceps en polea con cuerda tras nuca", sets: 3, reps: "10-12", rest: "1,5 min", notes: "" },
     ]
   },
   {
     id: 2, name: "Tirones", muscles: "Espalda · Hombro posterior · Bíceps", color: "#B57BF7",
     exercises: [
-      { name: "Seal row con mancuernas en banco inclinado", sets: 4, reps: "8-10", rest: "El necesario", notes: "Series pesadas. Los codos van pegados al cuerpo en la medida de lo posible y realizamos un movimiento pendular" },
-      { name: "Remo con mancuerna", sets: 4, reps: "6-8", rest: "2 min", notes: "Movimiento pendular y llevamos el brazo pegado al torso" },
-      { name: "Jalón al pecho agarre abierto", sets: 4, reps: "8-12", rest: "2 min", notes: "" },
-      { name: "Remo Gironda agarre cerrado", sets: 4, reps: "8-12", rest: "1,5 min", notes: "" },
-      { name: "Hombro posterior en polea", sets: 4, reps: "10-12", rest: "1,5 min", notes: "" },
-      { name: "Curl de bíceps martillo con cuerda", sets: 1, reps: "75", rest: "10-20 seg", notes: "1 serie de 75 repeticiones. Cogemos un peso con el que nos hagamos 20-25 repeticiones y tenemos que llegar a 75 realizando pequeños descansos de 10-20 segundos" },
-      { name: "Curl alterno con mancuernas", sets: 3, reps: "8-12", rest: "1,5 min", notes: "" },
+      { name: "Dominadas", sets: 4, reps: "6-10", rest: "El necesario", notes: "" },
+      { name: "Remo Gironda agarre cerrado", sets: 4, reps: "8-10", rest: "El necesario", notes: "Codos pegados al cuerpo y tiramos hacia la zona baja del abdomen" },
+      { name: "Remo con mancuerna a una mano", sets: 4, reps: "8-10", rest: "2 min", notes: "" },
+      { name: "Hombro posterior en polea", sets: 3, reps: "10-12", rest: "1,5 min", notes: "Abrimos los brazos llevando los codos hacia atrás y aguantamos 1 seg en el punto de máxima contracción" },
+      { name: "Jalón al pecho agarre cerrado", sets: 3, reps: "10-12", rest: "1,5 min", notes: "+ 1 serie extra con doble descendente: al fallo, bajamos el peso un 20-30% y al fallo sin descanso; volvemos a bajar un 20-30% y último intento al fallo" },
+      { name: "Curl con barra Z de pie", sets: 3, reps: "8-10", rest: "1,5 min", notes: "" },
+      { name: "Curl bayesian en polea", sets: 3, reps: "10-12 c/brazo", rest: "1,5 min", notes: "" },
     ]
   },
   {
     id: 3, name: "Hombro + Abdomen", muscles: "Hombro · Core", color: "#F6AD55",
     exercises: [
-      { name: "Elevaciones frontales con disco o mancuernas", sets: 3, reps: "8-10", rest: "1 min", notes: "" },
-      { name: "Press militar con mancuernas de pie + Facepull", sets: 3, reps: "8-10", rest: "1,5 min", notes: "" },
-      { name: "Elevaciones laterales en polea", sets: 4, reps: "8-10", rest: "1,5 min", notes: "" },
-      { name: "Press militar en máquina + Pájaros con mancuernas", sets: 3, reps: "10-12", rest: "1,5 min", notes: "Nos llevamos las mancuernas donde el press y en el mismo asiento del press realizamos los pájaros; si no podemos, los hacemos de pie" },
-      { name: "Elevaciones laterales en máquina", sets: 1, reps: "75", rest: "10-20 seg", notes: "Si no hay máquina, con mancuernas. 1 serie de 75 repeticiones. Cogemos un peso con el que nos hagamos 20-25 repeticiones y tenemos que llegar a 75 realizando pequeños descansos de 10-20 segundos" },
-      { name: "Crunch abdominal en máquina", sets: 6, reps: "10-15 (cerca del fallo)", rest: "30 seg", notes: "Series cerca del fallo, entre 10 y 15 repeticiones es un rango óptimo" },
-      { name: "Elevaciones de pierna colgado en silla romana + Plancha", sets: 3, reps: "Al fallo (mín. 12)", rest: "1,5 min", notes: "Podemos elevar solo las rodillas si no podemos elevar las piernas" },
+      { name: "Press militar en máquina", sets: 4, reps: "6-8", rest: "El necesario", notes: "Bajamos de forma controlada y con la espalda apoyada todo el movimiento" },
+      { name: "Elevaciones laterales + frontales de pie", sets: 3, reps: "10-12", rest: "1,5 min", notes: "" },
+      { name: "Pájaros con mancuernas", sets: 4, reps: "10-12", rest: "1,5 min", notes: "" },
+      { name: "Press militar sentado con barra corta (agarre estrecho, codos adelantados)", sets: 3, reps: "8-10", rest: "1,5 min", notes: "Codos adelantados, movimiento controlado y sin arquear la zona lumbar" },
+      { name: "Facepull en polea con cuerda", sets: 3, reps: "10-12", rest: "1,5 min", notes: "+ 1 serie extra con doble descendente: al fallo, bajamos el peso un 20-30% y al fallo sin descanso; volvemos a bajar un 20-30% y último intento al fallo" },
+      { name: "Elevaciones de rodillas en silla romana con control", sets: 4, reps: "8-12", rest: "1 min", notes: "" },
+      { name: "Crunch abdominal con peso (disco o mancuerna)", sets: 3, reps: "10-12", rest: "1 min", notes: "" },
     ]
   },
   {
     id: 4, name: "Pierna", muscles: "Cuádriceps · Glúteo · Femoral · Gemelo", color: "#4FC66A",
     exercises: [
-      { name: "Sentadillas en Multipower", sets: 4, reps: "6-10", rest: "El necesario", notes: "Busca la máxima profundidad que te permita tu movilidad" },
-      { name: "Sentadilla búlgara con mancuerna (para cuádriceps)", sets: 3, reps: "6-10 c/pierna", rest: "1,5 min", notes: "Torso recto y apertura más corta" },
-      { name: "Extensión de cuádriceps a una pierna", sets: 4, reps: "8-10 c/pierna", rest: "1,5 min", notes: "" },
-      { name: "Hip Thrust en máquina", sets: 3, reps: "8-10", rest: "1-1,5 min", notes: "Si no hay máquina, puedes usar la Multipower" },
-      { name: "Femoral sentado", sets: 4, reps: "8-12", rest: "1,5 min", notes: "" },
-      { name: "Femoral tumbado", sets: 4, reps: "10-12", rest: "1,5 min", notes: "" },
-      { name: "Sentadilla goblet con mancuerna", sets: 3, reps: "10-12", rest: "Máx. 1 min", notes: "Poco descanso (máximo 1 minuto)" },
-      { name: "Gemelo de pie en Multipower o prensa + Gemelo sin peso en escalón", sets: 3, reps: "12-16 + fallo", rest: "1,5 min", notes: "" },
+      { name: "Sentadilla en Multipower", sets: 4, reps: "6-8", rest: "El necesario", notes: "Máxima profundidad que permita tu movilidad, con control en todo el recorrido" },
+      { name: "Prensa horizontal o prensa de placas bilateral", sets: 4, reps: "8-10", rest: "El necesario", notes: "" },
+      { name: "Extensión de cuádriceps en máquina", sets: 3, reps: "10-12", rest: "1,5 min", notes: "Apretamos 1 seg en el punto de máxima contracción y controlamos la bajada" },
+      { name: "Femoral sentado en máquina", sets: 3, reps: "8-10", rest: "1,5 min", notes: "" },
+      { name: "Hip Thrust en máquina", sets: 3, reps: "8-10", rest: "1,5 min", notes: "Si no hay máquina, en Multipower · Apretamos fuerte el glúteo arriba sin hiperextender la zona lumbar" },
+      { name: "Femoral tumbado en máquina", sets: 3, reps: "10-12", rest: "1,5 min", notes: "+ 1 serie extra con doble descendente: al fallo, bajamos el peso un 20-30% y al fallo sin descanso; volvemos a bajar un 20-30% y último intento al fallo" },
+      { name: "Gemelo de pie en Multipower o prensa + Gemelo sin peso en escalón", sets: 3, reps: "10-12 + fallo", rest: "1,5 min", notes: "Fase de estiramiento muy lenta; al terminar cada serie, gemelo sin peso hasta el fallo" },
     ]
   },
   {
     id: 5, name: "Brazo + Abdomen", muscles: "Bíceps · Tríceps · Core", color: "#F56565",
     exercises: [
-      { name: "Curl en máquina (la que haya en el gimnasio)", sets: 3, reps: "8-10", rest: "1,5 min", notes: "" },
-      { name: "Curl a una mano con mancuerna en banco Scott", sets: 4, reps: "8-10 c/brazo", rest: "1,5 min", notes: "" },
-      { name: "Curl simultáneo martillo con mancuernas", sets: 1, reps: "75", rest: "10-20 seg", notes: "1 serie de 75 repeticiones. Cogemos un peso con el que nos hagamos 20-25 repeticiones y tenemos que llegar a 75 realizando pequeños descansos de 10-20 segundos" },
-      { name: "Press cerrado en Multipower", sets: 4, reps: "6-10", rest: "1,5 min", notes: "Series pesadas" },
-      { name: "Tríceps katana en polea", sets: 4, reps: "8-10", rest: "1,5 min", notes: "" },
-      { name: "Extensión de tríceps desde polea alta tras nuca", sets: 1, reps: "75", rest: "10-20 seg", notes: "1 serie de 75 repeticiones. Cogemos un peso con el que nos hagamos 20-25 repeticiones y tenemos que llegar a 75 realizando pequeños descansos de 10-20 segundos" },
-      { name: "Circuito abdomen (x3 rondas)", sets: 3, reps: "Al fallo / 30 seg plancha", rest: "1 min entre rondas", notes: "3 ejercicios seguidos sin descanso: 1) Crunch abdominal al fallo · 2) Elevaciones de piernas tumbado al fallo · 3) Plancha abdominal 30 seg. Descansa 1 min y repite x3" },
+      { name: "Curl inclinado con mancuernas", sets: 3, reps: "8-10", rest: "1,5 min", notes: "Banco a 45-60° y codos atrás" },
+      { name: "Curl araña en polea", sets: 3, reps: "10-12", rest: "1,5 min", notes: "+ 1 serie extra con doble descendente: al fallo, bajamos el peso un 20-30% y al fallo sin descanso; volvemos a bajar un 20-30% y último intento al fallo" },
+      { name: "Curl martillo con mancuernas", sets: 3, reps: "8-10", rest: "1,5 min", notes: "" },
+      { name: "Press cerrado en Multipower", sets: 4, reps: "6-8", rest: "1,5-2 min", notes: "+ 1 serie extra con doble descendente: al fallo, bajamos el peso un 20-30% y al fallo sin descanso; volvemos a bajar un 20-30% y último intento al fallo" },
+      { name: "Tríceps katana en polea", sets: 3, reps: "8-10", rest: "1,5 min", notes: "" },
+      { name: "Press francés neutro a una mano con mancuerna", sets: 3, reps: "10-12 c/brazo", rest: "1,5 min", notes: "" },
+      { name: "Circuito abdomen (x3 rondas)", sets: 3, reps: "15-20 / 15-20 / 10-12 por lado", rest: "1 min entre rondas", notes: "3 ejercicios seguidos sin descanso: 1) Crunch inverso 15-20 · 2) Elevaciones de piernas 15-20 (si no podemos, elevamos rodillas) · 3) Giros rusos 10-12 por lado (podemos coger un disco). Descansa 1 min y repite x3" },
     ]
   },
 ];
 
+const C1_PAN = { label: "Comida 1", items: ["60g pan", "50g jamón serrano", "Tomate natural triturado", "1 yogur de proteína"] };
+const C1_CEREAL = { label: "Comida 1", items: ["40g Chocapic", "200ml bebida vegetal (<30 kcal/100ml)", "30g proteína en polvo"] };
+const C2_FAJITA = { label: "Comida 2", items: ["2 panes de fajita", "100g fiambre de pavo o pollo", "2 lonchas de queso havarti light", "1 pieza de fruta"] };
+const C2_LACON = { label: "Comida 2", items: ["60g pan", "100g lacón", "1 pieza de fruta"] };
+const C3_PATATA = { label: "Comida 3", items: ["400g patata o 200g ñoquis", "100g aguacate", "200g pechuga de pollo", "1 yogur de proteína"] };
+const C3_PASTA = { label: "Comida 3", items: ["90g pasta normal en crudo", "Verdura a tu gusto", "2 huevos", "1 yogur (tamaño normal) o 1 pieza de fruta"] };
+const C3_ARROZ_HUEVO = { label: "Comida 3", items: ["90g arroz en crudo", "3 huevos a tu gusto", "Verdura a tu gusto", "1 pieza de fruta"] };
+const C4_LOMO = { label: "Comida 4", items: ["60g pan", "100g lomo embuchado o 150g fiambre muslito de pollo", "1 pieza de fruta"], notes: "El muslito de pollo lo hay en muchos súper, también en Mercadona" };
+const C4_BATIDO = { label: "Comida 4", items: ["500g queso fresco batido", "1 plátano", "1 cucharada grande de crema de cacahuete"] };
+const C5_BURGOS = { label: "Comida 5", items: ["100g queso de Burgos", "150g hamburguesa de pollo de carnicería", "60g arroz en crudo", "100g aguacate", "1 pieza de fruta"], notes: "Puedes usar una bolsita de arroz congelado de Mercadona de 160g" };
+const C5_PIZZA = { label: "Comida 5", items: ["1 base de pizza de Mercadona", "2 latas de atún al natural o en escabeche", "2 lonchas de queso havarti light", "2 cucharadas de tomate frito sin azúcar añadido", "1 pieza de fruta"] };
+const C5_LIBRE = { label: "Comida 5", items: ["Comida libre", "Máx. 1200 kcal"], notes: "Lo ideal es que lleve algo de proteína", free: true };
+
 const DIET = {
-  0: { name: "Domingo", meals: [
-    { label: "Comida 1", items: ["1 cucharada grande de mermelada sin azúcar añadido", "30g pan", "30g proteína en polvo", "200ml bebida vegetal baja en kcal"], notes: "Opción B: 30g pan · 2 huevos · 20g frutos secos no fritos" },
-    { label: "Comida 2", items: ["30g pan", "50g lomo embuchado", "1 yogurt de proteína"] },
-    { label: "Comida 3", items: ["60g arroz o pasta pesado en crudo", "3 huevos", "100g maíz o 100g aguacate", "1 yogurt de proteína"], notes: "Puedes usar una bolsita de arroz congelado de Mercadona de 160g" },
-    { label: "Comida 4", items: ["200g queso cottage", "100g frutos rojos o 1 pieza de fruta"], notes: "Puedes usar edulcorante · Opción B: 30g proteína en polvo · 200ml bebida vegetal baja en kcal · 30g corn flakes o Special K · 1 pieza de fruta (si es sandía o melón, 200g)" },
-    { label: "Comida 5", items: ["Comida libre con cuidado", "Máx. 1000 kcal"], free: true },
-  ]},
-  1: { name: "Lunes", meals: [
-    { label: "Comida 1", items: ["1 cucharada grande de mermelada sin azúcar añadido", "30g pan", "30g proteína en polvo", "200ml bebida vegetal baja en kcal"], notes: "Opción B: 30g pan · 2 huevos · 20g frutos secos no fritos" },
-    { label: "Comida 2", items: ["30g pan", "50g lomo embuchado", "1 yogurt de proteína"] },
-    { label: "Comida 3", items: ["Ensalada de 150g ñoquis o 300g patata", "200g pechuga de pollo", "1 tomate", "1 pepino", "10g nueces", "1 pieza de fruta"], notes: "Tienes un toque de spray de aceite para la comida y otro para la cena · Puedes usar sal, especias y vinagre" },
-    { label: "Comida 4", items: ["200g queso cottage", "100g frutos rojos o 1 pieza de fruta"], notes: "Puedes usar edulcorante · Opción B: 30g proteína en polvo · 200ml bebida vegetal baja en kcal · 30g corn flakes o Special K · 1 pieza de fruta (si es sandía o melón, 200g)" },
-    { label: "Comida 5", items: ["Tortilla de 3 huevos", "100g ñoquis o 200g patata", "Verdura u hortaliza en cantidad libre (dentro o acompañando)", "1 pieza de fruta"], notes: "Puedes usar siempre que quieras ketchup light o salsas sin calorías de tiendas de nutrición · Consejo: toma siempre el postre de una comida 15 min después de terminar de comer" },
-  ]},
-  2: { name: "Martes", meals: [
-    { label: "Comida 1", items: ["30g proteína en polvo", "200ml bebida vegetal baja en kcal", "30g corn flakes o Special K", "1 pieza de fruta"], notes: "Si es sandía o melón, 200g · Opción B: 30g pan · 30g jamón serrano · 1 huevo · Tomate natural (opcional)" },
-    { label: "Comida 2", items: ["80g fiambre de pavo o pollo", "1 loncha de queso de proteína", "30g pan", "1 pieza de fruta"] },
-    { label: "Comida 3", items: ["Ensalada de 200g garbanzos ya hechos (vale cualquier otra legumbre)", "Pimiento, tomate, cebolla y hoja verde al gusto", "30g pan", "150g pechuga de pollo", "1 pieza de fruta"] },
-    { label: "Comida 4", items: ["4 tortas de maíz sabor jamón de Mercadona", "100g fiambre de pavo o pollo"], notes: "Si lo prefieres, puedes usar 4 tortas de arroz" },
-    { label: "Comida 5", items: ["200g pescado blanco, sepia o pulpo", "200g patata o 100g ñoquis", "Verdura a tu gusto", "1 pieza de fruta"] },
-  ]},
-  3: { name: "Miércoles", meals: [
-    { label: "Comida 1", items: ["1 cucharada grande de mermelada sin azúcar añadido", "30g pan", "30g proteína en polvo", "200ml bebida vegetal baja en kcal"], notes: "Opción B: 30g pan · 2 huevos · 20g frutos secos no fritos" },
-    { label: "Comida 2", items: ["30g pan", "50g lomo embuchado", "1 yogurt de proteína"] },
-    { label: "Comida 3", items: ["60g arroz en crudo", "200g queso cottage", "2 latas de atún al natural", "1 pieza de fruta"], notes: "Todo mezclado está bueno · Puedes usar una bolsita de arroz congelado de Mercadona de 160g" },
-    { label: "Comida 4", items: ["200g queso cottage", "100g frutos rojos o 1 pieza de fruta"], notes: "Puedes usar edulcorante · Opción B: 30g proteína en polvo · 200ml bebida vegetal baja en kcal · 30g corn flakes o Special K · 1 pieza de fruta (si es sandía o melón, 200g)" },
-    { label: "Comida 5", items: ["200g hamburguesa de pechuga de pollo", "30g pan", "Verdura a tu gusto", "1 pieza de fruta"], notes: "Buenas opciones: una bandeja de champiñones, u otros días berenjena o calabacín a la plancha" },
-  ]},
-  4: { name: "Jueves", meals: [
-    { label: "Comida 1", items: ["30g proteína en polvo", "200ml bebida vegetal baja en kcal", "30g corn flakes o Special K", "1 pieza de fruta"], notes: "Si es sandía o melón, 200g · Opción B: 30g pan · 30g jamón serrano · 1 huevo · Tomate natural (opcional)" },
-    { label: "Comida 2", items: ["80g fiambre de pavo o pollo", "1 loncha de queso de proteína", "30g pan", "1 pieza de fruta"] },
-    { label: "Comida 3", items: ["Ensalada de 200g garbanzos ya hechos (vale cualquier otra legumbre)", "Pimiento, tomate, cebolla y hoja verde al gusto", "30g pan", "150g pechuga de pollo", "1 pieza de fruta"] },
-    { label: "Comida 4", items: ["4 tortas de maíz sabor jamón de Mercadona", "100g fiambre de pavo o pollo"], notes: "Si lo prefieres, puedes usar 4 tortas de arroz" },
-    { label: "Comida 5", items: ["Tortilla de 3 huevos", "100g ñoquis o 200g patata", "1 pieza de fruta", "Verdura u hortaliza en cantidad libre (dentro o acompañando)"] },
-  ]},
-  5: { name: "Viernes", meals: [
-    { label: "Comida 1", items: ["1 cucharada grande de mermelada sin azúcar añadido", "30g pan", "30g proteína en polvo", "200ml bebida vegetal baja en kcal"], notes: "Opción B: 30g pan · 2 huevos · 20g frutos secos no fritos" },
-    { label: "Comida 2", items: ["30g pan", "50g lomo embuchado", "1 yogurt de proteína"] },
-    { label: "Comida 3", items: ["60g arroz en crudo", "200g queso cottage", "2 latas de atún al natural", "1 pieza de fruta"], notes: "Todo mezclado está bueno · Puedes usar una bolsita de arroz congelado de Mercadona de 160g" },
-    { label: "Comida 4", items: ["200g queso cottage", "100g frutos rojos o 1 pieza de fruta"], notes: "Puedes usar edulcorante · Opción B: 30g proteína en polvo · 200ml bebida vegetal baja en kcal · 30g corn flakes o Special K · 1 pieza de fruta (si es sandía o melón, 200g)" },
-    { label: "Comida 5", items: ["200g ternera", "330ml gazpacho", "1 pieza de fruta"] },
-  ]},
-  6: { name: "Sábado", meals: [
-    { label: "Comida 1", items: ["30g proteína en polvo", "200ml bebida vegetal baja en kcal", "30g corn flakes o Special K", "1 pieza de fruta"], notes: "Si es sandía o melón, 200g · Opción B: 30g pan · 30g jamón serrano · 1 huevo · Tomate natural (opcional)" },
-    { label: "Comida 2", items: ["80g fiambre de pavo o pollo", "1 loncha de queso de proteína", "30g pan", "1 pieza de fruta"] },
-    { label: "Comida 3", items: ["60g arroz o pasta pesado en crudo", "100g maíz o 100g aguacate", "100g piña", "125g salmón"], notes: "Puedes usar una bolsita de arroz congelado de Mercadona de 160g" },
-    { label: "Comida 4", items: ["4 tortas de maíz sabor jamón de Mercadona", "100g fiambre de pavo o pollo"], notes: "Si lo prefieres, puedes usar 4 tortas de arroz" },
-    { label: "Comida 5", items: ["Comida libre con cuidado", "Máx. 1000 kcal"], free: true },
-  ]},
+  0: { name: "Domingo", meals: [C1_PAN, C2_FAJITA, C3_ARROZ_HUEVO, C4_LOMO, C5_LIBRE] },
+  1: { name: "Lunes", meals: [C1_PAN, C2_FAJITA, C3_PATATA, C4_LOMO, C5_BURGOS] },
+  2: { name: "Martes", meals: [C1_CEREAL, C2_LACON, C3_PASTA, C4_BATIDO, C5_PIZZA] },
+  3: { name: "Miércoles", meals: [C1_PAN, C2_FAJITA,
+    { label: "Comida 3", items: ["90g arroz en crudo", "200g carne roja", "1 pieza de fruta"] },
+    C4_LOMO, C5_BURGOS] },
+  4: { name: "Jueves", meals: [C1_CEREAL, C2_LACON, C3_PATATA, C4_BATIDO,
+    { label: "Comida 5", items: ["250g puré o crema de verduras", "200g carne roja", "300g patata", "1 pieza de fruta"] }] },
+  5: { name: "Viernes", meals: [C1_PAN, C2_FAJITA, C3_PASTA, C4_LOMO, C5_PIZZA] },
+  6: { name: "Sábado", meals: [C1_CEREAL, C2_LACON, C3_ARROZ_HUEVO, C4_BATIDO, C5_LIBRE] },
 };
 
 const DIET_NOTES = [
+  "Tienes 2 toques de spray de aceite para las comidas y otro para las cenas",
+  "Con comidas o cenas puedes usar ketchup light, 1 cucharada de tomate frito sin azúcar añadido o 1 cucharada de salsa de soja",
+  "Si pasas hambre por la noche: 30g de caseína con un dedo de bebida vegetal (queda como un pudin), un rato después de cualquier cena",
   "Café o té con edulcorante y un chorrito de leche desnatada o bebida vegetal muy baja en kcal",
   "Refrescos light permitidos",
   "Bebe al menos 2 litros de agua al día (es una referencia: no te obligues a beber, pero oblígate a tener el hábito)",
